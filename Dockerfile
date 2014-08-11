@@ -14,13 +14,24 @@ RUN ./configure
 RUN make
 RUN make install
 
-### Install Ryu, an OpenFlow 1.3 controller
-RUN apt-get install -y python-setuptools python-pip python-dev \
-	libxml2-dev libxslt-dev git
-WORKDIR /src
-RUN git clone https://github.com/osrg/ryu.git
-WORKDIR /src/ryu
-RUN python ./setup.py install
+### Install Trema-edge, an OpenFlow 1.3 controller
+RUN apt-get install -y gcc make git ruby2.0 ruby2.0-dev libpcap-dev libsqlite3-dev
+RUN ln -s /usr/include/x86_64-linux-gnu/ruby-2.0.0 /usr/include/ruby-2.0.0/x86_64-linux-gnu
+RUN ln -s /usr/bin/ruby2.0 /usr/local/bin/ruby
+RUN ln -s /usr/bin/gem2.0 /usr/local/bin/gem
+RUN useradd -m -s /bin/bash trema
+RUN echo 'trema:trema' | chpasswd
+RUN echo 'trema ALL = (ALL) NOPASSWD: ALL' > /etc/sudoers.d/trema
+USER trema
+WORKDIR /home/trema
+RUN git clone https://github.com/trema/trema-edge.git
+WORKDIR /home/trema/trema-edge
+ENV HOME /home/trema
+RUN sudo gem install bundler
+RUN bundle
+RUN rake
+USER root
+ENV HOME /
 
 RUN apt-get install -y git
 WORKDIR /src

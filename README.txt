@@ -29,7 +29,7 @@ lagopus-vswitchコンテナの作成
         $ sudo pipework br1 -i eth1 $LAGOPUS 0.0.0.0/0
         $ sudo pipework br2 -i eth2 $LAGOPUS 0.0.0.0/0
 
-        lagopus-vswitch.shでlagopusとryuのsimple-switchを起動している。
+        lagopus-vswitch.shでlagopusとtrema-edgeのlearning-switchを起動している。
 
 pc1コンテナの作成
         $ PC1=$(docker run -d -n=false -i -t ubuntu:14.04 /bin/bash)
@@ -50,10 +50,4 @@ lagopus-vswitchコンテナでフローを確認する
         $ docker attach $LAGOPUS
         root@yyyyyyyyyyyy:lagosh
         zzzzzzzzzzzz> show flow
-        Bridge: br0
-         Table id: 0
-          priority=1,idle_timeout=0,hard_timeout=0,flags=0,cookie=0,packet_count=53,byte_count=5082,in_port=3,eth_dst=86:60:2a:79:40:37 actions=output:2
-          priority=1,idle_timeout=0,hard_timeout=0,flags=0,cookie=0,packet_count=52,byte_count=4984,in_port=2,eth_dst=b2:7c:e1:9a:f7:62 actions=output:3
-          priority=0,idle_timeout=0,hard_timeout=0,flags=0,cookie=0,packet_count=14,byte_count=1012 actions=output:-3
-        zzzzzzzzzzzz>
-
+        ...

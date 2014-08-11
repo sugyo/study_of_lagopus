@@ -9,16 +9,16 @@ kill_all: kill_lagopus_vswitch kill_pc1 kill_pc2
 build_lagopus_vswitch: images/lagopus_vswitch
 
 images/lagopus_vswitch: Dockerfile
-	{ docker build --no-cache -t lagopus-vswitch:ryu . && touch $@; }
+	{ docker build --no-cache -t lagopus-vswitch:trema . && touch $@; }
 
 rmi_lagopus_vswitch:
-	{ docker rmi lagopus-vswitch:ryu; rm images/lagopus_vswitch; }
+	{ docker rmi lagopus-vswitch:trema; rm images/lagopus_vswitch; }
 
 run_lagopus_vswitch: containers/lagopus_vswitch
 
 containers/lagopus_vswitch: build_lagopus_vswitch
 	{ \
-		C=$$(docker run -d -v $$(pwd)/samples:/src/samples -i -t lagopus-vswitch:ryu /src/samples/lagopus-vswitch.sh) && \
+		C=$$(docker run -d -v $$(pwd)/samples:/src/samples -i -t lagopus-vswitch:trema /src/samples/lagopus-vswitch.sh) && \
 		echo $$C > $@; \
 		sudo pipework br1 -i eth1 $$C 0.0.0.0/0 && \
 		sudo pipework br2 -i eth2 $$C 0.0.0.0/0; \
